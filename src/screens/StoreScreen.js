@@ -1,0 +1,31 @@
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+export default function StoreScreen() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Loja de Recompensas</Text>
+      <Text style={styles.subtitle}>Tela: 🛒 LOJA DE RECOMPENSAS</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#EBF1F7',
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#0056B3',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#4A5568',
+  },
+});
