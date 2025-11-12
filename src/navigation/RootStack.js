@@ -1,16 +1,22 @@
 import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { ActivityIndicator, View } from "react-native";
 import { AuthContext } from "../contexts/AuthContext";
-import AppTabs from "./AppTabs";
+
+// 🔹 Navegações
+import DrawerNavigator from "./DrawerNavigator"; // Drawer que contém as Tabs
+import AppTabs from "./AppTabs"; // Mantido para uso dentro do Drawer
+
+// 🔹 Telas públicas
 import LoginScreen from "../screens/LoginScreen";
 import SignupScreen from "../screens/SignupScreen";
-import { ActivityIndicator, View } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
 export default function RootStack() {
   const { user, loading } = useContext(AuthContext);
 
+  // Enquanto o app carrega os dados do usuário (AsyncStorage)
   if (loading) {
     return (
       <View
@@ -18,9 +24,10 @@ export default function RootStack() {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
+          backgroundColor: "#1a1a2e",
         }}
       >
-        <ActivityIndicator size="large" color="#4C6EF5" />
+        <ActivityIndicator size="large" color="#c738fb" />
       </View>
     );
   }
@@ -28,10 +35,10 @@ export default function RootStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user ? (
-        // Usuário logado → vai para AppTabs
-        <Stack.Screen name="AppTabs" component={AppTabs} />
+        // 🔒 Usuário logado → entra na navegação com Drawer (que contém as Tabs)
+        <Stack.Screen name="AppDrawer" component={DrawerNavigator} />
       ) : (
-        // Não logado → mostra Login e Signup
+        // 🔓 Usuário não logado → telas públicas
         <>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Signup" component={SignupScreen} />
