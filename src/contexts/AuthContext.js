@@ -7,27 +7,25 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔄 Simula carregar a sessão salva (ex: após fechar e abrir o app)
+  // 🚀 Sempre iniciar deslogado (ignora sessão salva)
   useEffect(() => {
-    const loadUserData = async () => {
+    const resetUser = async () => {
       try {
-        const userData = await AsyncStorage.getItem("@user");
-        if (userData) {
-          setUser(JSON.parse(userData));
-        }
+        // Remove qualquer usuário anterior salvo
+        await AsyncStorage.removeItem("@user");
+        setUser(null);
       } catch (error) {
-        console.log("Erro ao carregar usuário:", error);
+        console.log("Erro ao limpar usuário:", error);
       } finally {
         setLoading(false);
       }
     };
-    loadUserData();
+    resetUser();
   }, []);
 
-  // 🔐 Simula login (depois substituímos pela API)
+  // 🔐 Login fake (pode ser substituído depois pela API real)
   const login = async (email, password) => {
     try {
-      // mock simples de usuário
       const fakeUser = { id: 1, name: "Usuário Demo", email };
       await AsyncStorage.setItem("@user", JSON.stringify(fakeUser));
       setUser(fakeUser);
@@ -38,10 +36,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🆕 Simula cadastro
+  // 🆕 Cadastro fake
   const signup = async (name, email, password) => {
     try {
-      // mock de resposta de cadastro
       const fakeUser = { id: Date.now(), name, email };
       await AsyncStorage.setItem("@user", JSON.stringify(fakeUser));
       setUser(fakeUser);
@@ -52,10 +49,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🚪 Logout
+  // 🚪 Logout manual
   const logout = async () => {
-    await AsyncStorage.removeItem("@user");
-    setUser(null);
+    try {
+      await AsyncStorage.removeItem("@user");
+      setUser(null);
+    } catch (error) {
+      console.log("Erro ao deslogar:", error);
+    }
   };
 
   return (
@@ -73,3 +74,7 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+// Lógica para lembrar login
+// const userData = await AsyncStorage.getItem("@user");
+// if (userData) setUser(JSON.parse(userData));
