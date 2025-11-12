@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
-import ChatStyles from '../styles/ChatScreen';  
-import { Colors } from '../styles/Colors'; // Importar para o placeholder
+import ChatStyles from '../../styles/user/ChatScreen';  
+import { Colors } from '../../styles/Colors'; // Importar para o placeholder
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function ChatScreen() {

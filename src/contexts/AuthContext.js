@@ -7,11 +7,10 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🚀 Sempre iniciar deslogado (ignora sessão salva)
+  // 🚀 Sempre inicia deslogado (limpa sessão toda vez)
   useEffect(() => {
     const resetUser = async () => {
       try {
-        // Remove qualquer usuário anterior salvo
         await AsyncStorage.removeItem("@user");
         setUser(null);
       } catch (error) {
@@ -23,11 +22,15 @@ export const AuthProvider = ({ children }) => {
     resetUser();
   }, []);
 
-  // 🔐 Login fake (pode ser substituído depois pela API real)
+  // 🔐 Login fake (define papel com base no e-mail)
   const login = async (email, password) => {
     try {
-      const fakeUser = { id: 1, name: "Usuário Demo", email };
-      await AsyncStorage.setItem("@user", JSON.stringify(fakeUser));
+      const role = email.includes("admin") ? "admin" : "user";
+      const fakeUser = { id: Date.now(), name: "Usuário Demo", email, role };
+
+      // 👉 Durante o desenvolvimento, NÃO salvamos no AsyncStorage
+      // await AsyncStorage.setItem("@user", JSON.stringify(fakeUser));
+
       setUser(fakeUser);
       return true;
     } catch (error) {
@@ -36,11 +39,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🆕 Cadastro fake
   const signup = async (name, email, password) => {
     try {
-      const fakeUser = { id: Date.now(), name, email };
-      await AsyncStorage.setItem("@user", JSON.stringify(fakeUser));
+      const fakeUser = { id: Date.now(), name, email, role: "user" };
+      // await AsyncStorage.setItem("@user", JSON.stringify(fakeUser));
       setUser(fakeUser);
       return true;
     } catch (error) {
@@ -49,10 +51,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // 🚪 Logout manual
   const logout = async () => {
     try {
-      await AsyncStorage.removeItem("@user");
+      // await AsyncStorage.removeItem("@user");
       setUser(null);
     } catch (error) {
       console.log("Erro ao deslogar:", error);
@@ -74,7 +75,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-// Lógica para lembrar login
-// const userData = await AsyncStorage.getItem("@user");
-// if (userData) setUser(JSON.parse(userData));

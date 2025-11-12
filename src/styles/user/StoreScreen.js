@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, Spacing, Typography } from './Colors';
+import { Colors, Spacing, Typography } from '../Colors';
 
 const StoreStyles = StyleSheet.create({
   safeArea: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import HomeStyles from '../styles/HomeScreen';
+import HomeStyles from '../../styles/user/HomeScreen';
 
 // Supondo que você usará ícones, por exemplo:
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 

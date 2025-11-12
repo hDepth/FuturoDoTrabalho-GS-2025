@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { Colors, Spacing, Typography } from './Colors';
+import { Colors, Spacing, Typography } from '../Colors';
 
 const { width } = Dimensions.get('window');
 const cardWidth = (width - Spacing.md * 3) / 2; // 2 colunas com padding

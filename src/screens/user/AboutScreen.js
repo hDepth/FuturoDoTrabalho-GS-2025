@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import AboutStyles from '../styles/AboutScreen';
+import AboutStyles from '../../styles/user/AboutScreen';
 
 export default function AboutScreen() {
   // Você pode injetar isso via variáveis de ambiente no build

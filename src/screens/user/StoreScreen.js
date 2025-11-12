@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, SafeAreaView, Image } from 'react-native';
-import StoreStyles from '../styles/StoreScreen';
-import { Colors } from '../styles/Colors'; // Importar Colors para usar no mock
+import StoreStyles from '../../styles/user/StoreScreen';
+import { Colors } from '../../styles/Colors'; // Importar Colors para usar no mock
 
 // Dados mocados
 const MOCK_ITEMS = [

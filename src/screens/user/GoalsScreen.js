@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, SafeAreaView, Image } from 'react-native';
-import GoalsStyles from '../styles/GoalsScreen';
-import { Colors } from '../styles/Colors'; // Importar Colors para usar no mock
+import GoalsStyles from '../../styles/user/GoalsScreen';
+import { Colors } from '../../styles/Colors'; // Importar Colors para usar no mock
 
 // Dados mocados
 const MOCK_GOALS = {
