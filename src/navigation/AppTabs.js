@@ -5,6 +5,7 @@ import GoalsScreen from '../screens/GoalsScreen';
 import StoreScreen from '../screens/StoreScreen';
 import ChatScreen from '../screens/ChatScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import AboutScreen from '../screens/AboutScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +23,7 @@ export default function AppTabs() {
       <Tab.Screen name="Store" component={StoreScreen} options={{ title: 'Loja' }} />
       <Tab.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat IA' }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: 'Perfil' }} />
+      <Tab.Screen name="About" component={AboutScreen} options={{ title: 'Sobre' }} />
     </Tab.Navigator>
   );
 }
