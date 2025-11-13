@@ -1,95 +1,91 @@
-import { StyleSheet } from 'react-native';
-import { Colors, Spacing, Typography } from '../Colors';
+import { StyleSheet } from "react-native";
+import { Colors, Spacing, Typography } from "../Colors";
 
-const StoreStyles = StyleSheet.create({
+export default StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Colors.backgroundDark,
   },
   storeHeader: {
-    padding: Spacing.md,
-    paddingBottom: Spacing.xl + Spacing.lg, // Mais espaço para a imagem
-    backgroundColor: Colors.backgroundLight,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    position: 'relative',
-  },
-  headerImage: {
-    width: 120,
-    height: 120,
-    backgroundColor: Colors.grey, // Placeholder
-    borderRadius: 10,
-    position: 'absolute',
-    right: Spacing.md,
-    bottom: -Spacing.lg, // Sobrepõe a lista
-    transform: [{ rotate: '5deg' }],
+    padding: Spacing.lg,
+    alignItems: "center",
   },
   title: {
     ...Typography.title,
-    maxWidth: '70%',
+    textAlign: "center",
   },
   subtitle: {
     ...Typography.caption,
-    maxWidth: '65%',
+    textAlign: "center",
     marginTop: Spacing.sm,
+    color: Colors.textSecondary,
+  },
+  headerImage: {
+    marginTop: Spacing.lg,
+    backgroundColor: Colors.backgroundLight,
+    padding: Spacing.md,
+    borderRadius: 50,
+    shadowColor: Colors.primary,
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
+    elevation: 6,
   },
   listContainer: {
-    padding: Spacing.md,
-    paddingTop: Spacing.xl, // Espaço para a imagem do header
+    paddingHorizontal: Spacing.lg,
+    paddingBottom: 100,
   },
   itemCard: {
     backgroundColor: Colors.backgroundLight,
-    borderRadius: 12,
-    padding: Spacing.md,
-    marginBottom: Spacing.md,
+    borderRadius: 18,
+    padding: Spacing.lg,
+    marginBottom: Spacing.lg,
+    shadowColor: Colors.primary,
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
   },
   itemHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: Spacing.md,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: Spacing.sm,
   },
   gemIcon: {
-    width: 24,
-    height: 24,
-    borderRadius: 4,
-    transform: [{ rotate: '45deg' }],
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    shadowColor: Colors.secondary,
+    shadowOpacity: 0.6,
+    shadowRadius: 6,
+    elevation: 5,
   },
   itemPrice: {
-    ...Typography.subtitle,
     color: Colors.secondary,
+    fontWeight: "bold",
   },
   itemIcon: {
-    width: 60,
-    height: 60,
-    backgroundColor: Colors.backgroundDark, // Fundo do ícone
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginVertical: Spacing.md,
+    alignItems: "center",
+    marginVertical: Spacing.sm,
   },
   itemTitle: {
     ...Typography.subtitle,
-    textAlign: 'center',
+    textAlign: "center",
+    marginTop: Spacing.sm,
   },
   itemDescription: {
     ...Typography.caption,
-    textAlign: 'center',
+    textAlign: "center",
     marginVertical: Spacing.sm,
   },
   buyButton: {
     backgroundColor: Colors.primary,
-    borderRadius: 8,
     paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    marginTop: Spacing.md,
+    borderRadius: 12,
+    alignItems: "center",
+    marginTop: Spacing.sm,
   },
   buyButtonText: {
     ...Typography.body,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: Colors.text,
+    fontWeight: "600",
   },
 });
-
-export default StoreStyles;

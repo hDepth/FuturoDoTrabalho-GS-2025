@@ -1,100 +1,87 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import { Colors, Spacing, Typography } from '../Colors';
+import { StyleSheet } from "react-native";
+import { Colors, Spacing, Typography } from "../Colors";
 
-const { width } = Dimensions.get('window');
-const cardWidth = (width - Spacing.md * 3) / 2; // 2 colunas com padding
-
-const GoalsStyles = StyleSheet.create({
+export default StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Colors.backgroundDark,
   },
   container: {
     flex: 1,
-    padding: Spacing.md,
+    padding: Spacing.lg,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: Spacing.lg,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: Spacing.md,
   },
   title: {
     ...Typography.title,
+    color: Colors.text,
   },
   subtitle: {
     ...Typography.caption,
-    maxWidth: '80%',
+    color: Colors.textSecondary,
   },
   headerIcon: {
-    width: 60,
-    height: 60,
     backgroundColor: Colors.backgroundLight,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderRadius: 12,
+    padding: Spacing.md,
   },
   tabContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    marginBottom: Spacing.md,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginBottom: Spacing.lg,
+  },
+  tabButton: {
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.lg,
+    borderRadius: 12,
+    backgroundColor: Colors.backgroundLight,
+  },
+  tabButtonActive: {
+    backgroundColor: Colors.primary,
   },
   tabText: {
-    ...Typography.subtitle,
-    fontSize: 16,
+    ...Typography.body,
     color: Colors.textSecondary,
-    marginRight: Spacing.lg,
-    paddingBottom: Spacing.sm,
   },
   tabTextActive: {
     color: Colors.text,
+    fontWeight: "bold",
   },
   activeTabIndicator: {
     height: 3,
-    backgroundColor: Colors.primary,
-    borderRadius: 2,
+    width: "60%",
+    backgroundColor: Colors.secondary,
+    borderRadius: 3,
+    alignSelf: "center",
+    marginTop: Spacing.xs,
   },
   listContainer: {
-    alignItems: 'flex-start',
+    paddingBottom: 80,
   },
   goalCard: {
-    width: cardWidth,
-    height: cardWidth,
+    flex: 1,
+    margin: Spacing.sm,
     backgroundColor: Colors.backgroundLight,
-    borderRadius: 12,
-    margin: Spacing.sm / 2,
-    overflow: 'hidden',
-    justifyContent: 'flex-end',
-    padding: Spacing.sm,
-    // Sombra sutil para dar profundidade
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  cardImageBackground: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: Colors.grey, // Placeholder para a imagem de fundo
-    opacity: 0.3,
+    borderRadius: 16,
+    paddingVertical: Spacing.lg,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: Colors.primary,
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 6,
   },
   gemIcon: {
-    width: 24,
-    height: 24,
-    borderRadius: 4,
-    position: 'absolute',
-    top: Spacing.sm,
-    right: Spacing.sm,
-    transform: [{ rotate: '45deg' }],
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginBottom: Spacing.sm,
   },
   goalCardTitle: {
     ...Typography.subtitle,
-    fontSize: 16,
-    // Adiciona uma sombra no texto para legibilidade
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10,
+    textAlign: "center",
   },
 });
-
-export default GoalsStyles;                                                     

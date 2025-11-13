@@ -1,65 +1,61 @@
-import { StyleSheet } from 'react-native';
-import { Colors, Spacing, Typography } from '../Colors';
+import { StyleSheet } from "react-native";
+import { Colors, Spacing, Typography } from "../Colors";
 
-const HomeStyles = StyleSheet.create({
+export default StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Colors.backgroundDark,
   },
   container: {
     flex: 1,
-    padding: Spacing.md,
+    padding: Spacing.lg,
   },
   title: {
     ...Typography.title,
-    marginBottom: Spacing.xs,
+    marginBottom: 4,
   },
   subtitle: {
-    ...Typography.body,
-    color: Colors.textSecondary,
+    ...Typography.caption,
     marginBottom: Spacing.lg,
   },
   statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: Spacing.lg,
-    backgroundColor: Colors.backgroundLight,
-    padding: Spacing.md,
-    borderRadius: 8,
   },
   statBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    backgroundColor: Colors.backgroundLight,
+    borderRadius: 12,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    alignItems: "center",
+    width: "30%",
+    shadowColor: Colors.primary,
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
   },
   statText: {
-    ...Typography.subtitle,
-    marginLeft: Spacing.sm,
+    ...Typography.body,
+    marginTop: Spacing.sm,
+    textAlign: "center",
   },
-  xpIcon: {
-    color: Colors.secondary, // Verde
-  },
-  coinIcon: {
-    color: '#FFD700', // Dourado
-  },
-  gemIcon: {
-    color: Colors.gemPink, // Rosa
+  cardWrapper: {
+    marginBottom: Spacing.md,
   },
   card: {
     backgroundColor: Colors.backgroundLight,
-    borderRadius: 12,
-    padding: Spacing.md,
-    marginBottom: Spacing.md,
-    borderLeftWidth: 4,
-    borderLeftColor: Colors.primary,
+    borderRadius: 14,
+    padding: Spacing.lg,
+    shadowColor: Colors.primary,
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 6,
   },
   cardTitle: {
     ...Typography.subtitle,
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.xs,
   },
   cardContent: {
-    ...Typography.body,
-    color: Colors.textSecondary,
+    ...Typography.caption,
   },
 });
-
-export default HomeStyles;
