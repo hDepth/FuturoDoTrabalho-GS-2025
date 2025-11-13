@@ -1,5 +1,7 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { Colors, Spacing, Typography } from "../Colors";
+
+const { width } = Dimensions.get("window");
 
 export default StyleSheet.create({
   container: {
@@ -7,28 +9,50 @@ export default StyleSheet.create({
     backgroundColor: Colors.backgroundDark,
   },
   scrollContainer: {
-    padding: Spacing.lg,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.lg,
+    paddingBottom: 100,
   },
   title: {
     ...Typography.title,
-    marginBottom: Spacing.md,
+    fontSize: 24,
+    color: Colors.text,
+    marginBottom: Spacing.sm,
   },
   subtitle: {
     ...Typography.body,
     color: Colors.textSecondary,
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing.xl,
   },
   card: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: Colors.backgroundLight,
-    padding: Spacing.lg,
     borderRadius: 16,
+    padding: Spacing.lg,
     marginBottom: Spacing.md,
+    shadowColor: Colors.primary,
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 5 },
+    shadowRadius: 10,
+    elevation: 6,
+  },
+  iconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: Spacing.md,
   },
   cardTitle: {
     ...Typography.subtitle,
-    marginTop: Spacing.sm,
+    fontSize: 17,
+    color: Colors.text,
   },
   cardText: {
     ...Typography.caption,
+    color: Colors.textSecondary,
+    marginTop: 2,
   },
 });
