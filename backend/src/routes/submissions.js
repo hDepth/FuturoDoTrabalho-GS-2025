@@ -1,0 +1,11 @@
+const express = require('express');
+const router = express.Router();
+const sub = require('../controllers/submissionsController');
+const auth = require('../middlewares/auth');
+router.post('/', auth, sub.create);
+router.get('/mine', auth, sub.listMine);
+router.delete('/:id', auth, sub.cancel);
+router.get('/', auth, sub.listAll);
+router.put('/:id/approve', auth, sub.approve);
+router.put('/:id/reject', auth, sub.reject);
+module.exports = router;
