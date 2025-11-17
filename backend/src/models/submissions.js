@@ -1,23 +1,24 @@
 const db = require('../db');
 const oracledb = require('oracledb');
 
-// Criar uma submissão
+// Criar submission
 async function createSubmission({ userId, goalId, evidenceUrl, comment }) {
   const conn = await db.getConnection();
 
   try {
     const result = await conn.execute(
-      `INSERT INTO submissions 
-        (user_id, goal_id, evidence_url, comment, status)
-       VALUES 
-        (:userId, :goalId, :evidenceUrl, :comment, 'pending')
+      `INSERT INTO submissions (
+         user_id, goal_id, evidence_url, comment_text, status
+       ) VALUES (
+         :user_id, :goal_id, :evidence_url, :comment_text, 'pending'
+       )
        RETURNING id INTO :id`,
       {
-        userId,
-        goalId,
-        evidenceUrl,
-        comment,
-        id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+        user_id: userId,
+        goal_id: goalId,
+        evidence_url: evidenceUrl,
+        comment_text: comment,
+        id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
       },
       { autoCommit: true }
     );
@@ -35,17 +36,17 @@ async function createSubmission({ userId, goalId, evidenceUrl, comment }) {
   }
 }
 
-// Buscar submissões de um usuário
+// Buscar todas submissões do usuário
 async function findByUser(userId) {
   const conn = await db.getConnection();
 
   try {
     const res = await conn.execute(
-      `SELECT * 
+      `SELECT *
          FROM submissions
-        WHERE user_id = :userId
+        WHERE user_id = :user_id
         ORDER BY created_at DESC`,
-      { userId },
+      { user_id: userId },
       { outFormat: oracledb.OUT_FORMAT_OBJECT }
     );
 
@@ -55,7 +56,7 @@ async function findByUser(userId) {
   }
 }
 
-// Buscar submissão específica
+// Buscar por ID
 async function findById(id) {
   const conn = await db.getConnection();
 
@@ -72,28 +73,26 @@ async function findById(id) {
   }
 }
 
-// Atualizar status e recompensas
+// Atualizar status + recompensas
 async function updateStatus(id, status, awarded) {
   const conn = await db.getConnection();
 
   try {
-    const binds = {
-      id,
-      status,
-      awarded_xp: awarded?.xp || 0,
-      awarded_coins: awarded?.coins || 0,
-      awarded_gems: awarded?.gems || 0,
-    };
-
     await conn.execute(
       `UPDATE submissions
           SET status = :status,
-              awarded_xp = :awarded_xp,
-              awarded_coins = :awarded_coins,
-              awarded_gems = :awarded_gems,
+              awarded_xp = :xp,
+              awarded_coins = :coins,
+              awarded_gems = :gems,
               updated_at = SYSTIMESTAMP
         WHERE id = :id`,
-      binds,
+      {
+        id,
+        status,
+        xp: awarded?.xp || 0,
+        coins: awarded?.coins || 0,
+        gems: awarded?.gems || 0,
+      },
       { autoCommit: true }
     );
 
@@ -103,7 +102,7 @@ async function updateStatus(id, status, awarded) {
   }
 }
 
-// Deletar submissão
+// Deletar submission
 async function deleteSubmission(id) {
   const conn = await db.getConnection();
 
@@ -113,7 +112,6 @@ async function deleteSubmission(id) {
       { id },
       { autoCommit: true }
     );
-
     return true;
   } finally {
     await conn.close();

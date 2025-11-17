@@ -19,6 +19,25 @@ async function findByEmail(email) {
   }
 }
 
+async function findById(id) {
+  const conn = await db.getConnection();
+
+  try {
+    const res = await conn.execute(
+      `SELECT id, name, email, password_hash, role
+         FROM users
+        WHERE id = :id`,
+      { id },
+      { outFormat: oracledb.OUT_FORMAT_OBJECT }
+    );
+
+    return res.rows[0];
+  } finally {
+    await conn.close();
+  }
+}
+
+
 async function createUser({ name, email, password_hash, role }) {
   const conn = await db.getConnection();
 
@@ -46,4 +65,5 @@ async function createUser({ name, email, password_hash, role }) {
 module.exports = {
   findByEmail,
   createUser,
+  findById,
 };

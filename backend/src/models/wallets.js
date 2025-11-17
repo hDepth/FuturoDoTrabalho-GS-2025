@@ -43,8 +43,31 @@ module.exports = {
     }
   },
 
-  // Atualizar carteira
+  // Atualizar carteira (método antigo, mantido)
   async updateWallet(userId, coins, xp, gems) {
+    const conn = await db.getConnection();
+
+    try {
+      await conn.execute(
+        `
+        UPDATE wallets
+        SET coins = :coins,
+            xp = :xp,
+            gems = :gems
+        WHERE user_id = :userId
+        `,
+        { coins, xp, gems, userId },
+        { autoCommit: true }
+      );
+
+      return true;
+    } finally {
+      await conn.close();
+    }
+  },
+
+  // 🔥 NOVO — método que o submissionsController espera
+  async updateWalletByUser(userId, { coins, xp, gems }) {
     const conn = await db.getConnection();
 
     try {

@@ -1,11 +1,26 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const sub = require('../controllers/submissionsController');
-const auth = require('../middlewares/auth');
-router.post('/', auth, sub.create);
-router.get('/mine', auth, sub.listMine);
-router.delete('/:id', auth, sub.cancel);
-router.get('/', auth, sub.listAll);
-router.put('/:id/approve', auth, sub.approve);
-router.put('/:id/reject', auth, sub.reject);
+
+const submissionsController = require("../controllers/submissionsController");
+const auth = require("../middlewares/auth");
+const isAdmin = require("../middlewares/isAdmin");
+
+// Usuário cria submissão
+router.post("/", auth, submissionsController.create);
+
+// Usuário vê suas submissões
+router.get("/mine", auth, submissionsController.listMine);
+
+// Admin vê TODAS
+router.get("/", auth, isAdmin, submissionsController.listAll);
+
+// Admin aprova
+router.patch("/:id/approve", auth, isAdmin, submissionsController.approve);
+
+// Admin rejeita
+router.patch("/:id/reject", auth, isAdmin, submissionsController.reject);
+
+// Usuário cancela a sua própria
+router.delete("/:id", auth, submissionsController.cancel);
+
 module.exports = router;
