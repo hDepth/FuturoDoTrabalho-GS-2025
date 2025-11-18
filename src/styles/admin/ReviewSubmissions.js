@@ -8,6 +8,7 @@ export default StyleSheet.create({
   },
   scrollContainer: {
     padding: Spacing.lg,
+    paddingBottom: 120,
   },
   title: {
     ...Typography.title,
@@ -17,18 +18,24 @@ export default StyleSheet.create({
     ...Typography.caption,
     marginBottom: Spacing.lg,
   },
+
   submissionCard: {
     backgroundColor: Colors.backgroundLight,
     padding: Spacing.md,
     borderRadius: 12,
     marginBottom: Spacing.md,
+    borderWidth: 1,
+    borderColor: Colors.borderDark ?? "#23233a",
   },
   submissionTitle: {
     ...Typography.subtitle,
+    color: Colors.text,
   },
   submissionMeta: {
     ...Typography.caption,
+    color: Colors.textSecondary,
   },
+
   buttonRow: {
     flexDirection: "row",
     marginTop: Spacing.sm,
@@ -36,15 +43,15 @@ export default StyleSheet.create({
   },
   approveButton: {
     backgroundColor: Colors.success,
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 22,
+    borderRadius: 10,
   },
   rejectButton: {
     backgroundColor: Colors.error,
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 22,
+    borderRadius: 10,
   },
   buttonText: {
     ...Typography.subtitle,

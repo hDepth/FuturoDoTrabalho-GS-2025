@@ -50,6 +50,26 @@ exports.listAll = async (req, res) => {
   }
 };
 
+exports.getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Buscar no model
+    const submission = await submissionsModel.findById(id);
+
+    if (!submission) {
+      return res.status(404).json({ message: "Submission não encontrada" });
+    }
+
+    // Retornar a própria submission (já vem em UPPERCASE)
+    return res.json(submission);
+
+  } catch (err) {
+    console.error("Erro ao buscar submission por ID:", err);
+    res.status(500).json({ message: "Erro interno ao buscar submissão" });
+  }
+};
+
 exports.approve = async (req, res) => {
   const id = req.params.id;
   const AWARDED = { xp: 50, coins: 20, gems: 1 };

@@ -6,19 +6,24 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.backgroundDark,
   },
+
   scrollContainer: {
     padding: Spacing.lg,
     paddingBottom: 100,
   },
+
   title: {
     ...Typography.title,
     marginBottom: Spacing.sm,
   },
+
   caption: {
     ...Typography.caption,
     color: Colors.textSecondary,
     marginBottom: Spacing.lg,
   },
+
+  // Botão "Nova Meta"
   addButton: {
     backgroundColor: Colors.primary,
     paddingVertical: Spacing.md,
@@ -33,21 +38,28 @@ export default StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
   },
+
   addButtonText: {
     ...Typography.subtitle,
     color: Colors.text,
     marginLeft: 8,
   },
+
+  // Cards das metas
   goalCard: {
     backgroundColor: Colors.backgroundLight,
     padding: Spacing.md,
     borderRadius: 12,
     marginBottom: Spacing.md,
+    borderWidth: 1,
+    borderColor: Colors.borderDark,
   },
+
   goalTitle: {
     ...Typography.subtitle,
     color: Colors.text,
   },
+
   goalDate: {
     ...Typography.caption,
     color: Colors.textSecondary,
@@ -60,6 +72,7 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
   modalContainer: {
     backgroundColor: Colors.backgroundLight,
     width: "90%",
@@ -71,12 +84,14 @@ export default StyleSheet.create({
     shadowRadius: 20,
     elevation: 10,
   },
+
   modalTitle: {
     ...Typography.title,
     color: Colors.text,
     textAlign: "center",
     marginBottom: Spacing.lg,
   },
+
   input: {
     backgroundColor: Colors.backgroundDark,
     color: Colors.text,
@@ -85,12 +100,16 @@ export default StyleSheet.create({
     paddingVertical: Spacing.sm,
     fontSize: 15,
     marginBottom: Spacing.md,
+    borderWidth: 1,
+    borderColor: Colors.borderDark,
   },
+
   modalButtons: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: Spacing.lg,
   },
+
   cancelButton: {
     flex: 1,
     backgroundColor: Colors.grey,
@@ -98,20 +117,38 @@ export default StyleSheet.create({
     borderRadius: 10,
     marginRight: 10,
   },
+
   cancelText: {
     textAlign: "center",
     color: Colors.text,
     fontWeight: "600",
   },
+
   saveButton: {
     flex: 1,
     backgroundColor: Colors.primary,
     paddingVertical: Spacing.md,
     borderRadius: 10,
   },
+
   saveText: {
     textAlign: "center",
     color: Colors.text,
     fontWeight: "700",
+  },
+
+  // Extra: botões de ação dentro do card (editar/excluir)
+  goalActions: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  editButton: {
+    marginRight: 12,
+    padding: 4,
+  },
+
+  deleteButton: {
+    padding: 4,
   },
 });

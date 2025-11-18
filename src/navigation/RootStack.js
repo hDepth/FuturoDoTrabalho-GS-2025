@@ -6,6 +6,7 @@ import AppTabsAdmin from "./AppTabsAdmin";
 import LoginScreen from "../screens/LoginScreen";
 import SignupScreen from "../screens/SignupScreen";
 import { ActivityIndicator, View } from "react-native";
+import AdminStack from "./AdminStack";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +32,7 @@ export default function RootStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user ? (
         user.role === "admin" ? (
-          <Stack.Screen name="AppTabsAdmin" component={AppTabsAdmin} />
+          <Stack.Screen name="AdminStack" component={AdminStack} />
         ) : (
           <Stack.Screen name="AppTabsUser" component={AppTabsUser} />
         )

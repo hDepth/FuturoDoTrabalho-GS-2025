@@ -14,6 +14,9 @@ router.get("/mine", auth, submissionsController.listMine);
 // Admin vê TODAS
 router.get("/", auth, isAdmin, submissionsController.listAll);
 
+// Pega Pelo Id
+router.get("/:id", auth, isAdmin, submissionsController.getById);
+
 // Admin aprova
 router.patch("/:id/approve", auth, isAdmin, submissionsController.approve);
 
