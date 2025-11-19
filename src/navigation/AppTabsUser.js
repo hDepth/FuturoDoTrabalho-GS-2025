@@ -62,7 +62,6 @@ export default function AppTabsUser() {
     >
       <Tab.Screen name="Home" component={HomeScreen} options={{ title: "Início" }} />
       <Tab.Screen name="Goals" component={GoalsScreen} options={{ title: "Metas" }} />
-      <Tab.Screen name="History" component={HistoryScreen} options={{ title: "Historico" }} />
       <Tab.Screen name="Store" component={StoreScreen} options={{ title: "Loja" }} />
       <Tab.Screen name="Chat" component={ChatScreen} options={{ title: "Chat IA" }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: "Perfil" }} />

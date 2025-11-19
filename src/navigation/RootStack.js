@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthContext } from "../contexts/AuthContext";
-import AppTabsUser from "./AppTabsUser";
-import AppTabsAdmin from "./AppTabsAdmin";
+import UserStack from "./UserStack";
 import LoginScreen from "../screens/LoginScreen";
 import SignupScreen from "../screens/SignupScreen";
 import { ActivityIndicator, View } from "react-native";
@@ -34,7 +33,7 @@ export default function RootStack() {
         user.role === "admin" ? (
           <Stack.Screen name="AdminStack" component={AdminStack} />
         ) : (
-          <Stack.Screen name="AppTabsUser" component={AppTabsUser} />
+          <Stack.Screen name="UserStack" component={UserStack} />
         )
       ) : (
         <>
