@@ -1,45 +1,121 @@
-import React from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { Colors, Spacing, Typography } from "../../styles/Colors";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  Image,
+  Alert,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import * as Animatable from "react-native-animatable";
+import Icon from "@expo/vector-icons/MaterialIcons";
 
-export default function ManageRewards() {
-  return (
-    <View style={{ flex: 1, backgroundColor: Colors.backgroundDark }}>
-      <ScrollView contentContainerStyle={{ padding: Spacing.lg }}>
-        <Text style={[Typography.title, { marginBottom: Spacing.md }]}>Gerenciar Recompensas</Text>
-        <Text style={[Typography.caption, { marginBottom: Spacing.lg }]}>
-          Adicione novas recompensas e controle o estoque disponível.
-        </Text>
+import RewardsStyles from "../../styles/admin/ManageRewards";
+import { Colors } from "../../styles/Colors";
+import api from "../../services/api";
 
-        <TouchableOpacity
-          style={{
-            backgroundColor: Colors.primary,
-            padding: Spacing.md,
-            borderRadius: 12,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: Spacing.md,
-          }}
-        >
-          <MaterialCommunityIcons name="gift-outline" size={22} color={Colors.text} />
-          <Text style={[Typography.subtitle, { color: Colors.text, marginLeft: 8 }]}>
-            Nova Recompensa
-          </Text>
-        </TouchableOpacity>
+export default function AdminRewardsScreen() {
+  const [rewards, setRewards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [processingId, setProcessingId] = useState(null);
 
-        <View
-          style={{
-            backgroundColor: Colors.backgroundLight,
-            padding: Spacing.md,
-            borderRadius: 12,
-          }}
-        >
-          <Text style={Typography.subtitle}>Camiseta Exclusiva</Text>
-          <Text style={Typography.caption}>Custa: 150 moedas</Text>
+  useEffect(() => {
+    fetchRewards();
+  }, []);
+
+  const fetchRewards = async () => {
+    try {
+      setLoading(true);
+      // rota exposta pelo seu backend: /api/admin/store/rewards
+      const res = await api.get("/admin/store/rewards");
+      setRewards(res.data);
+    } catch (err) {
+      console.log("Erro ao carregar recompensas:", err);
+      Alert.alert("Erro", "Não foi possível carregar as compras.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const markReady = async (id) => {
+    try {
+      setProcessingId(id);
+      await api.patch(`/admin/store/rewards/${id}/ready`);
+      Alert.alert("OK", "Recompensa marcada como PRONTA.");
+      await fetchRewards();
+    } catch (err) {
+      console.log("Erro ao marcar ready:", err);
+      Alert.alert("Erro", "Não foi possível marcar como pronta.");
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
+  const markReceived = async (id) => {
+    try {
+      setProcessingId(id);
+      await api.patch(`/admin/store/rewards/${id}/received`);
+      Alert.alert("OK", "Recompensa marcada como ENTREGUE.");
+      await fetchRewards();
+    } catch (err) {
+      console.log("Erro ao marcar received:", err);
+      Alert.alert("Erro", "Não foi possível marcar como entregue.");
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
+  const renderReward = ({ item, index }) => (
+    <Animatable.View animation="fadeInUp" duration={480} delay={index * 80} style={RewardsStyles.card}>
+      <View style={RewardsStyles.row}>
+        <View style={RewardsStyles.left}>
+          {item.IMAGE_URL ? (
+            <Image source={{ uri: item.IMAGE_URL }} style={RewardsStyles.thumb} />
+          ) : (
+            <View style={[RewardsStyles.thumb, { justifyContent: "center", alignItems: "center" }]}>
+              <Text style={{ color: Colors.textSecondary }}>Sem imagem</Text>
+            </View>
+          )}
+
+          <View style={{ marginLeft: 12 }}>
+            <Text style={RewardsStyles.title}>{item.NAME}</Text>
+            <Text style={RewardsStyles.subtitle}>Usuário ID: {item.USER_ID}</Text>
+            <Text style={RewardsStyles.subtitle}>Comprado em: {new Date(item.CLAIMED_AT).toLocaleString()}</Text>
+          </View>
         </View>
-      </ScrollView>
-    </View>
+
+        <View style={RewardsStyles.actions}>
+          <Text style={[RewardsStyles.status, item.STATUS === "PENDING" ? { color: Colors.primary } : { color: Colors.success }]}>
+            {item.STATUS}
+          </Text>
+
+          <TouchableOpacity style={RewardsStyles.smallBtn} onPress={() => markReady(item.ID)} disabled={processingId === item.ID}>
+            {processingId === item.ID ? <ActivityIndicator /> : <Icon name="check-circle" size={20} color={Colors.primary} />}
+            <Text style={RewardsStyles.smallBtnText}>Pronto</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={RewardsStyles.smallBtn} onPress={() => markReceived(item.ID)} disabled={processingId === item.ID}>
+            <Icon name="done-all" size={20} color={Colors.secondary} />
+            <Text style={RewardsStyles.smallBtnText}>Entregue</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Animatable.View>
+  );
+
+  return (
+    <LinearGradient colors={[Colors.backgroundDark, Colors.backgroundLight]} style={{ flex: 1 }}>
+      <View style={{ flex: 1, padding: 16 }}>
+        <Text style={{ color: Colors.text, fontSize: 20, fontWeight: "700", marginBottom: 12 }}>Compras / Recompensas</Text>
+
+        {loading ? (
+          <ActivityIndicator size="large" color={Colors.primary} style={{ marginTop: 20 }} />
+        ) : (
+          <FlatList data={rewards} keyExtractor={(r) => r.ID.toString()} renderItem={renderReward} contentContainerStyle={{ paddingBottom: 120 }} />
+        )}
+      </View>
+    </LinearGradient>
   );
 }

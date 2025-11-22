@@ -7,6 +7,7 @@ import ManageRewards from "../screens/admin/ManageRewards";
 import ReviewSubmissions from "../screens/admin/ReviewSubmissions";
 import ProfileScreen from "../screens/admin/ProfileScreen";
 import AboutScreen from "../screens/admin/AboutScreen";
+import AdminStoreScreen from "../screens/admin/AdminStoreScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -62,7 +63,7 @@ export default function AppTabsAdmin() {
       <Tab.Screen name="Dashboard" component={AdminDashboard} options={{ title: "Painel" }} />
       <Tab.Screen name="ManageGoals" component={ManageGoals} options={{ title: "Metas" }} />
       <Tab.Screen name="ReviewSubmissions" component={ReviewSubmissions} options={{ title: "Avaliar" }} />
-      <Tab.Screen name="ManageRewards" component={ManageRewards} options={{ title: "Recompensas" }} />
+      <Tab.Screen name="AdminStoreScreen" component={AdminStoreScreen} options={{ title: "Recompensas" }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: "Perfil" }} />
       <Tab.Screen name="About" component={AboutScreen} options={{ title: "Sobre" }} />
     </Tab.Navigator>

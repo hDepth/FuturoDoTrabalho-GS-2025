@@ -1,45 +1,54 @@
 import { StyleSheet } from "react-native";
-import { Colors, Spacing, Typography } from "../Colors";
+import { Colors, Spacing, Typography } from "../../styles/Colors";
 
 export default StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.backgroundDark,
-  },
-  scrollContainer: {
-    padding: Spacing.lg,
-  },
-  title: {
-    ...Typography.title,
-    marginBottom: Spacing.md,
-  },
-  caption: {
-    ...Typography.caption,
-    marginBottom: Spacing.lg,
-  },
-  addButton: {
-    backgroundColor: Colors.primary,
-    padding: Spacing.md,
+  card: {
+    backgroundColor: Colors.backgroundLight,
     borderRadius: 12,
+    padding: Spacing.md,
+    marginBottom: Spacing.md,
+    shadowColor: Colors.primary,
+    shadowOpacity: 0.18,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  left: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    marginBottom: Spacing.md,
+    flex: 1,
   },
-  addButtonText: {
+  thumb: {
+    width: 64,
+    height: 64,
+    borderRadius: 10,
+    backgroundColor: Colors.grey,
+  },
+  title: {
     ...Typography.subtitle,
     color: Colors.text,
-    marginLeft: 8,
   },
-  rewardCard: {
-    backgroundColor: Colors.backgroundLight,
-    padding: Spacing.md,
-    borderRadius: 12,
-  },
-  rewardTitle: {
-    ...Typography.subtitle,
-  },
-  rewardCost: {
+  subtitle: {
     ...Typography.caption,
+    color: Colors.textSecondary,
+  },
+  actions: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginLeft: 12,
+  },
+  status: {
+    fontWeight: "700",
+  },
+  smallBtn: {
+    marginTop: 8,
+    alignItems: "center",
+  },
+  smallBtnText: {
+    color: Colors.textSecondary,
+    fontSize: 12,
   },
 });
