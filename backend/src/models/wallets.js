@@ -1,3 +1,4 @@
+// src/models/wallets.js
 const db = require("../db");
 const oracledb = require("oracledb");
 
@@ -23,8 +24,9 @@ module.exports = {
   },
 
   // Buscar carteira pelo ID do usuário
-  async getWalletByUser(userId) {
-    const conn = await db.getConnection();
+  // agora aceita conexão opcional
+  async getWalletByUser(userId, connection) {
+    const conn = connection || await db.getConnection();
 
     try {
       const result = await conn.execute(
@@ -37,15 +39,20 @@ module.exports = {
         { outFormat: oracledb.OUT_FORMAT_OBJECT }
       );
 
-      return result.rows.length > 0 ? result.rows[0] : null;
+      if (!connection) {
+        return result.rows.length > 0 ? result.rows[0] : null;
+      } else {
+        // se dentro de transação, ainda retorna row[0] - mesmo comportamento
+        return result.rows.length > 0 ? result.rows[0] : null;
+      }
     } finally {
-      await conn.close();
+      if (!connection) await conn.close();
     }
   },
 
-  // Atualizar carteira (método antigo, mantido)
-  async updateWallet(userId, coins, xp, gems) {
-    const conn = await db.getConnection();
+  // Atualizar carteira (método antigo, mantido) — aceita connection opcional
+  async updateWallet(userId, coins, xp, gems, connection) {
+    const conn = connection || await db.getConnection();
 
     try {
       await conn.execute(
@@ -56,19 +63,21 @@ module.exports = {
             gems = :gems
         WHERE user_id = :userId
         `,
-        { coins, xp, gems, userId },
-        { autoCommit: true }
+        { coins: Number(coins), xp: Number(xp), gems: Number(gems), userId }
       );
+
+      if (!connection) await conn.commit();
 
       return true;
     } finally {
-      await conn.close();
+      if (!connection) await conn.close();
     }
   },
 
   // 🔥 NOVO — método que o submissionsController espera
-  async updateWalletByUser(userId, { coins, xp, gems }) {
-    const conn = await db.getConnection();
+  // agora aceita conexão opcional e garante Number() para todos os binds
+  async updateWalletByUser(userId, { coins, xp, gems }, connection) {
+    const conn = connection || await db.getConnection();
 
     try {
       await conn.execute(
@@ -79,13 +88,19 @@ module.exports = {
             gems = :gems
         WHERE user_id = :userId
         `,
-        { coins, xp, gems, userId },
-        { autoCommit: true }
+        {
+          coins: Number(coins),
+          xp: Number(xp),
+          gems: Number(gems),
+          userId
+        }
       );
+
+      if (!connection) await conn.commit();
 
       return true;
     } finally {
-      await conn.close();
+      if (!connection) await conn.close();
     }
   }
 };

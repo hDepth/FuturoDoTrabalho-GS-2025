@@ -16,20 +16,30 @@ async function init() {
   console.log("Connected to Oracle DB!");
 }
 
-// Função para pegar uma conexão
 async function getConnection() {
   if (!pool) await init();
   return await pool.getConnection();
 }
 
-// Função execute() usada por todos os models
+// EXECUTE PADRÃO — SEMPRE RETORNA SOMENTE "ROWS"
 async function execute(sql, params = {}) {
   let conn;
 
   try {
     conn = await getConnection();
-    const result = await conn.execute(sql, params, { autoCommit: true });
-    return result;
+
+    const result = await conn.execute(
+      sql,
+      params,
+      {
+        autoCommit: true,
+        outFormat: oracledb.OUT_FORMAT_OBJECT
+      }
+    );
+
+    // RESULTADO SEGURO PARA JSON
+    return result.rows || [];
+
   } finally {
     if (conn) await conn.close();
   }
