@@ -164,7 +164,7 @@ export default function HomeScreen({ navigation }) {
           </Animatable.View>
 
           {/* 🫧 Cards */}
-          {[
+          {[ 
             {
               title: "Ranking da Turma",
               text: "Você está em 3º lugar! Continue assim.",
@@ -209,6 +209,34 @@ export default function HomeScreen({ navigation }) {
               </Animatable.View>
             </Animatable.View>
           ))}
+
+          {/* 🔔 Botão do Inventário (leva à InventoryScreen) */}
+          <Animatable.View
+            animation="fadeInUp"
+            delay={1200}
+            duration={800}
+          >
+            <Animatable.View
+              animation={bounceAnim}
+              iterationCount={1}
+              style={[HomeStyles.cardWrapper, { marginTop: 8 }]}
+            >
+              <TouchableOpacity
+                activeOpacity={0.85}
+                style={[HomeStyles.card, { flexDirection: "row", justifyContent: "space-between", alignItems: "center" }]}
+                onPress={() => navigation.navigate("Inventory")}
+              >
+                <View>
+                  <Text style={HomeStyles.cardTitle}>Meu Inventário</Text>
+                  <Text style={HomeStyles.cardContent}>Comprovantes de itens solicitados — retire na empresa.</Text>
+                </View>
+                <View style={{ alignItems: "center" }}>
+                  <MaterialCommunityIcons name="clipboard-list" size={28} color={Colors.primary} />
+                </View>
+              </TouchableOpacity>
+            </Animatable.View>
+          </Animatable.View>
+
         </ScrollView>
       </Animated.View>
     </LinearGradient>
