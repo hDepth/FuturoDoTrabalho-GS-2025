@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from "react";
+import React, { useRef, useCallback, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Image,
+  Modal,
+  ScrollView,
+  StyleSheet,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
@@ -13,6 +17,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import StoreStyles from "../../styles/user/StoreScreen";
 import { Colors } from "../../styles/Colors";
 import api from "../../services/api";
+import { AuthContext } from "../../contexts/AuthContext";
 
 // 🔥 COMPONENTES DE ANIMAÇÃO
 import Confetti from "../../components/Confetti";
@@ -22,6 +27,8 @@ import PurchaseSuccessModal from "../../components/PurchaseSuccessModal";
 export default function StoreScreen({ navigation }) {
   const headerRef = useRef(null);
   const listRef = useRef(null);
+
+  const { user } = useContext(AuthContext); // pega usuário logado
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,6 +43,10 @@ export default function StoreScreen({ navigation }) {
   const [showFloating, setShowFloating] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+
+  // Modal detalhe do item (quando usuário aperta o card)
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [detailItem, setDetailItem] = useState(null);
 
   // 🔄 Recarregar dados ao focar a tela
   useFocusEffect(
@@ -53,7 +64,7 @@ export default function StoreScreen({ navigation }) {
     try {
       setLoading(true);
       const res = await api.get("/store/items");
-      setItems(res.data);
+      setItems(res.data || []);
     } catch (err) {
       console.log("Erro ao carregar itens:", err);
       Alert.alert("Erro", "Não foi possível carregar os itens da loja.");
@@ -92,6 +103,9 @@ export default function StoreScreen({ navigation }) {
       // atualizar
       await fetchItems();
       await fetchWallet();
+
+      // se estava no detalhe, fecha o detalhe
+      setDetailVisible(false);
     } catch (err) {
       console.log("Erro na compra:", err.response?.data || err);
 
@@ -104,7 +118,13 @@ export default function StoreScreen({ navigation }) {
     }
   };
 
-  // 🎨 Render de cada item
+  // Abre detalhe do item (quando usuário toca no card)
+  const openDetail = (item) => {
+    setDetailItem(item);
+    setDetailVisible(true);
+  };
+
+  // Render de cada item — agora o card é 'apertável'
   const renderStoreItem = ({ item, index }) => (
     <Animatable.View
       animation="fadeInUp"
@@ -112,25 +132,44 @@ export default function StoreScreen({ navigation }) {
       delay={index * 120}
       style={StoreStyles.itemCard}
     >
-      <View style={StoreStyles.itemHeader}>
-        <View style={[StoreStyles.gemIcon, { backgroundColor: Colors.gemPink }]} />
-        <Text style={StoreStyles.itemPrice}>{item.PRICE} Moedas</Text>
-      </View>
-
-      <View style={StoreStyles.itemIcon}>
-        <Text style={{ fontSize: 28 }}>🛒</Text>
-      </View>
-
-      <Text style={StoreStyles.itemTitle}>{item.NAME}</Text>
-      <Text style={StoreStyles.itemDescription}>{item.DESCRIPTION || "Sem descrição."}</Text>
-
       <TouchableOpacity
-        activeOpacity={0.85}
-        style={StoreStyles.buyButton}
-        onPress={() => handlePurchase(item)}
-        disabled={buyingId === item.ID}
+        activeOpacity={0.9}
+        onPress={() => openDetail(item)}
+        style={{ flex: 1 }}
       >
-        {buyingId === item.ID ? <ActivityIndicator color="#fff" /> : <Text style={StoreStyles.buyButtonText}>Comprar Item</Text>}
+        <View style={StoreStyles.itemHeader}>
+          <View style={[StoreStyles.gemIcon, { backgroundColor: Colors.gemPink }]} />
+          <Text style={StoreStyles.itemPrice}>{item.PRICE} Moedas</Text>
+        </View>
+
+        <View style={StoreStyles.itemIcon}>
+          {item.IMAGE_URL ? (
+            <Image
+              source={{ uri: item.IMAGE_URL }}
+              style={{ width: 120, height: 120, borderRadius: 12, resizeMode: "cover" }}
+            />
+          ) : (
+            <Text style={{ fontSize: 28 }}>🛒</Text>
+          )}
+        </View>
+
+        <Text style={StoreStyles.itemTitle}>{item.NAME}</Text>
+        <Text style={StoreStyles.itemDescription}>
+          {item.DESCRIPTION ? (item.DESCRIPTION.length > 80 ? item.DESCRIPTION.slice(0, 80) + "..." : item.DESCRIPTION) : "Sem descrição."}
+        </Text>
+
+        <TouchableOpacity
+          activeOpacity={0.85}
+          style={StoreStyles.buyButton}
+          onPress={() => handlePurchase(item)}
+          disabled={buyingId === item.ID}
+        >
+          {buyingId === item.ID ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={StoreStyles.buyButtonText}>Comprar Item</Text>
+          )}
+        </TouchableOpacity>
       </TouchableOpacity>
     </Animatable.View>
   );
@@ -165,7 +204,7 @@ export default function StoreScreen({ navigation }) {
       <View style={{ flex: 1 }}>
         {/* HEADER */}
         <Animatable.View ref={headerRef} style={StoreStyles.storeHeader}>
-          <Text style={StoreStyles.title}>Olá, Jennifer</Text>
+          <Text style={StoreStyles.title}>Olá, {user?.name ?? "amigo(a)"}</Text>
           <Text style={StoreStyles.subtitle}>Bem-vindo(a) à loja! Escolha itens incríveis para evoluir na jornada.</Text>
         </Animatable.View>
 
@@ -183,11 +222,59 @@ export default function StoreScreen({ navigation }) {
           )}
         </Animatable.View>
       </View>
+
+      {/* MODAL DE DETALHE DO ITEM */}
+      <Modal visible={detailVisible} animationType="slide" transparent>
+        <View style={detailStyles.backdrop}>
+          <Animatable.View animation="slideInUp" duration={320} style={detailStyles.modalBox}>
+            <ScrollView contentContainerStyle={{ padding: 16 }}>
+              {detailItem?.IMAGE_URL ? (
+                <Image source={{ uri: detailItem.IMAGE_URL }} style={detailStyles.detailImage} />
+              ) : (
+                <View style={detailStyles.noImage}>
+                  <Text style={{ fontSize: 48 }}>🛒</Text>
+                </View>
+              )}
+
+              <Text style={detailStyles.detailTitle}>{detailItem?.NAME}</Text>
+              <Text style={detailStyles.detailPrice}>{detailItem?.PRICE} Moedas</Text>
+              <Text style={detailStyles.detailStock}>Estoque: {detailItem?.STOCK ?? 0}</Text>
+
+              <Text style={detailStyles.detailDescription}>
+                {detailItem?.DESCRIPTION || "Sem descrição disponível."}
+              </Text>
+
+              <View style={{ flexDirection: "row", gap: 12, marginTop: 18 }}>
+                <TouchableOpacity
+                  style={[detailStyles.actionBtn, { backgroundColor: Colors.secondary }]}
+                  onPress={() => {
+                    setDetailVisible(false);
+                  }}
+                >
+                  <Text style={detailStyles.actionBtnText}>Fechar</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[detailStyles.actionBtn, { backgroundColor: Colors.primary }]}
+                  onPress={() => handlePurchase(detailItem)}
+                  disabled={buyingId === detailItem?.ID}
+                >
+                  {buyingId === detailItem?.ID ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <Text style={detailStyles.actionBtnText}>Comprar</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </Animatable.View>
+        </View>
+      </Modal>
     </LinearGradient>
   );
 }
 
-// HUD Styles
+// HUD Styles (mantidos)
 const hudStyles = {
   hudContainer: {
     flexDirection: "row",
@@ -216,3 +303,64 @@ const hudStyles = {
     fontWeight: "bold",
   },
 };
+
+// Estilos locais do modal de detalhe
+const detailStyles = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    backgroundColor: "rgba(12,12,20,0.6)",
+    justifyContent: "flex-end",
+  },
+  modalBox: {
+    maxHeight: "85%",
+    backgroundColor: Colors.backgroundLight,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
+    paddingBottom: 20,
+  },
+  detailImage: {
+    width: "100%",
+    height: 220,
+    borderRadius: 12,
+    marginBottom: 12,
+    resizeMode: "cover",
+  },
+  noImage: {
+    width: "100%",
+    height: 220,
+    borderRadius: 12,
+    marginBottom: 12,
+    backgroundColor: "rgba(255,255,255,0.04)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  detailTitle: {
+    color: Colors.text,
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 6,
+  },
+  detailPrice: {
+    color: Colors.secondary,
+    fontWeight: "700",
+    marginBottom: 6,
+  },
+  detailStock: {
+    color: Colors.textSecondary,
+    marginBottom: 12,
+  },
+  detailDescription: {
+    color: Colors.textSecondary,
+    lineHeight: 20,
+  },
+  actionBtn: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  actionBtnText: {
+    color: "#fff",
+    fontWeight: "700",
+  },
+});
