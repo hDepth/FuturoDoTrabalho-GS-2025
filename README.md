@@ -1,19 +1,7 @@
-# 📘 CP2APPAI — Gamificação para Produtividade
+# 📘 **ALLGoals** — Gamificação para Produtividade
 
-Bem-vindo ao repositório oficial do **CP2APPAI**, um aplicativo desenvolvido para a Global Solution 2025 da FIAP, utilizando **React Native com Expo**, integrado a um backend Node.js/Express conectado ao banco **Oracle Cloud (FIAP)**.
+Bem-vindo ao repositório oficial do **ALLGoals**, um aplicativo desenvolvido para a Global Solution 2025 da FIAP, utilizando **React Native com Expo**, integrado a um backend Node.js/Express conectado ao banco **Oracle Cloud (FIAP)**.
 
-Este README foi criado para ser **completo, profissional e pronto para entrega**, explicando:
-
-* O **desafio da GS**
-* O **funcionamento do app**
-* A **API + backend hospedado no Render**
-* O fluxo de autenticação
-* O sistema de gamificação (XP, recompensas, loja)
-* A publicação no **Firebase App Distribution**
-* Passos para rodar o projeto
-* Estrutura, tecnologias e arquitetura
-
----
 
 # 🎯 1. O DESAFIO DA GLOBAL SOLUTION 2025 (FIAP)
 
@@ -37,7 +25,7 @@ A solução é composta por:
 
 # 📱 2. SOBRE O APP (FUNCIONALIDADES)
 
-O **CP2APPAI** é um aplicativo moderno de gamificação com foco em produtividade. Ele permite que usuários:
+O **AllGoas** é um aplicativo moderno de gamificação com foco em produtividade. Ele permite que usuários:
 
 ### 👤 Fluxo do Usuário
 
@@ -45,13 +33,14 @@ O **CP2APPAI** é um aplicativo moderno de gamificação com foco em produtivida
 * Visualizem seu progresso (XP, nível e metas)
 * Realizem submissões de atividades
 * Comprem itens com pontos acumulados
-* Consultem detalhes dos itens e recompensas
+* Consultem detalhes das metas, itens e recompensas
 * Acessem a página "Sobre o App" com hash do commit da versão publicada
 
 ### 🔐 Fluxo do Administrador
 
 Admins podem:
 
+* Criar, editar e excluir Metas para os usuarios
 * Aprovar/reprovar submissões
 * Acompanhar detalhes dos envios
 * Criar, editar e excluir itens da loja
@@ -134,26 +123,6 @@ req.user.role === "admin"
 
 ---
 
-# 🧩 6. ARQUITETURA DO APP
-
-```
-📁 src/
- ├── api/api.js
- ├── navigation/
- │    ├── AdminStack.js
- │    ├── AppTabsAdmin.js
- │    └── UserStack.js
- ├── screens/
- │    ├── user/
- │    ├── admin/
- │    └── auth/
- ├── components/
- ├── styles/
- └── utils/
-```
-
----
-
 # 🏪 7. SISTEMA DE LOJA (GAMIFICAÇÃO)
 
 * Itens cadastrados no painel Admin
@@ -195,6 +164,18 @@ npx expo start
 
 # 💾 10. COMO RODAR O BACKEND LOCALMENTE
 
+Você pode encontrar a pasta com o backend no repositório: [Futuro-Do-Trabalho-Backend](https://github.com/hDepth/FuturoDoTrabalho-GS-2025-Backend.git)
+
+acesse a pasta:
+
+```
+git clone https://github.com/hDepth/FuturoDoTrabalho-GS-2025-Backend.git
+cd FuturoDoTrabalho-GS-2025-Backend
+cd backend
+```
+
+Rode localmente:
+
 ```
 npm install
 npm run dev
@@ -206,7 +187,7 @@ Requer **Oracle Instant Client** instalado.
 
 # 📡 11. COMO ALTERAR A BASE URL DO FRONTEND
 
-Arquivo: `/src/api/api.js`
+Arquivo: `/src/services/api.js`
 
 ### 🔥 Em produção:
 
@@ -224,7 +205,7 @@ baseURL: "http://10.0.2.2:4000/api"
 
 # 🏁 12. CONCLUSÃO
 
-O **CP2APPAI** é uma solução completa para gamificação de produtividade, com backend robusto, app moderno e integração com serviços reais como OracleDB, Render e Firebase.
+O **ALLGoals** é uma solução completa para gamificação de produtividade, com backend robusto, app moderno e integração com serviços reais como OracleDB, Render e Firebase.
 
 O projeto cumpre todos os requisitos da Global Solution e apresenta uma arquitetura sólida e escalável.
 
@@ -232,16 +213,16 @@ O projeto cumpre todos os requisitos da Global Solution e apresenta uma arquitet
 
 # 👥 Integrantes do Grupo
 
-* Nome 1
-* Nome 2
-* Nome 3
+Pedro Henrique Jorge De Paula – RM 558833
 
-(Preencher com os nomes reais)
+Jennifer Kaori Suzuki – RM 554661
+
+Felipe Levy Stephens Fidelix – RM 556426
 
 ---
 
 # 📌 Commit Referência da Versão Publicada
 
 ```
-30ced303aed17dc7f486c8e6a07f0fb1612440bf
+885506a9077105bb3070d9cda89e26cf437ef55c
 ```
