@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AdminDashboard from "../screens/admin/AdminDashboard";
 import ManageGoals from "../screens/admin/ManageGoals";
-import ManageRewards from "../screens/admin/ManageRewards";
 import ReviewSubmissions from "../screens/admin/ReviewSubmissions";
 import ProfileScreen from "../screens/admin/ProfileScreen";
 import AboutScreen from "../screens/admin/AboutScreen";

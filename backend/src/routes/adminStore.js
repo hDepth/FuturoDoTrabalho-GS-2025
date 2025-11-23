@@ -10,6 +10,9 @@ const rewardsController = require("../controllers/rewardsController");
 
 // ---- ITENS (ADMIN) ----
 
+// Listar o item
+router.get("/items", auth, isAdmin, itemsController.getAll);
+
 // Criar item
 router.post("/items", auth, isAdmin, itemsController.create);
 

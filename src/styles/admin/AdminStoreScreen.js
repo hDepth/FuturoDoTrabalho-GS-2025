@@ -76,4 +76,28 @@ export default StyleSheet.create({
   iconBtn: {
     padding: 8,
   },
+  rewardsBtn: {
+    width: "100%",
+    marginTop: 20,
+    borderRadius: 16,
+    overflow: "hidden",
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+  },
+  rewardsBtnGradient: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 16,
+    paddingHorizontal: 18,
+    borderRadius: 16,
+  },
+  rewardsBtnText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "700",
+    letterSpacing: 0.5,
+  },
 });

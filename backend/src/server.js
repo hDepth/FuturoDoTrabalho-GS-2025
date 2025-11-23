@@ -22,6 +22,7 @@ app.use("/api/goals", require("./routes/goals"));
 app.use("/api/store", require("./routes/store"));                 // compra / itens da loja
 app.use("/api/admin/store", require("./routes/adminStore"));      // admin: itens + recompensas
 
+
 // -------------------------------
 // 🎁 Rotas de itens / recompensas do usuário
 // -------------------------------

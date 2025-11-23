@@ -18,7 +18,7 @@ import { Colors } from "../../styles/Colors";
 import api from "../../services/api";
 import ItemFormModal from "../../components/admin/ItemFormModal";
 
-export default function AdminStoreScreen() {
+export default function AdminStoreScreen({ navigation }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,7 +37,6 @@ export default function AdminStoreScreen() {
     try {
       setLoading(true);
       const res = await api.get("/admin/store/items");
-      // API returns array of items; keep as-is
       setItems(res.data);
     } catch (err) {
       console.log("Erro ao carregar itens admin:", err);
@@ -58,15 +57,12 @@ export default function AdminStoreScreen() {
   };
 
   const onSaveItem = async (payload) => {
-    // payload: { name, description, price, stock, image_url }
     try {
       setSaving(true);
       if (editingItem) {
-        // update
         await api.put(`/admin/store/items/${editingItem.ID}`, payload);
         Alert.alert("Sucesso", "Item atualizado.");
       } else {
-        // create
         await api.post("/admin/store/items", payload);
         Alert.alert("Sucesso", "Item criado.");
       }
@@ -119,9 +115,17 @@ export default function AdminStoreScreen() {
       <View style={StoreAdminStyles.row}>
         <View style={StoreAdminStyles.itemInfo}>
           {item.IMAGE_URL ? (
-            <Image source={{ uri: item.IMAGE_URL }} style={StoreAdminStyles.thumb} />
+            <Image
+              source={{ uri: item.IMAGE_URL }}
+              style={StoreAdminStyles.thumb}
+            />
           ) : (
-            <View style={[StoreAdminStyles.thumb, { justifyContent: "center", alignItems: "center" }]}>
+            <View
+              style={[
+                StoreAdminStyles.thumb,
+                { justifyContent: "center", alignItems: "center" },
+              ]}
+            >
               <Text style={{ color: Colors.textSecondary }}>No image</Text>
             </View>
           )}
@@ -131,16 +135,24 @@ export default function AdminStoreScreen() {
             <Text style={StoreAdminStyles.itemDesc} numberOfLines={2}>
               {item.DESCRIPTION || "—"}
             </Text>
-            <Text style={StoreAdminStyles.itemMeta}>{item.PRICE} Moedas • {item.STOCK} em estoque</Text>
+            <Text style={StoreAdminStyles.itemMeta}>
+              {item.PRICE} Moedas • {item.STOCK} em estoque
+            </Text>
           </View>
         </View>
 
         <View style={StoreAdminStyles.actions}>
-          <TouchableOpacity style={StoreAdminStyles.iconBtn} onPress={() => onOpenEdit(item)}>
+          <TouchableOpacity
+            style={StoreAdminStyles.iconBtn}
+            onPress={() => onOpenEdit(item)}
+          >
             <Icon name="edit" size={22} color={Colors.primary} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={StoreAdminStyles.iconBtn} onPress={() => confirmDelete(item)}>
+          <TouchableOpacity
+            style={StoreAdminStyles.iconBtn}
+            onPress={() => confirmDelete(item)}
+          >
             {deletingId === item.ID ? (
               <ActivityIndicator size="small" color={Colors.error} />
             ) : (
@@ -153,19 +165,29 @@ export default function AdminStoreScreen() {
   );
 
   return (
-    <LinearGradient colors={[Colors.backgroundDark, Colors.backgroundLight]} style={StoreAdminStyles.safeArea}>
+    <LinearGradient
+      colors={[Colors.backgroundDark, Colors.backgroundLight]}
+      style={StoreAdminStyles.safeArea}
+    >
       <View style={{ flex: 1 }}>
         <View style={StoreAdminStyles.header}>
           <Text style={StoreAdminStyles.title}>Admin — Itens da Loja</Text>
 
-          <TouchableOpacity style={StoreAdminStyles.createBtn} onPress={onOpenCreate}>
+          <TouchableOpacity
+            style={StoreAdminStyles.createBtn}
+            onPress={onOpenCreate}
+          >
             <Text style={StoreAdminStyles.createBtnText}>+ Novo Item</Text>
           </TouchableOpacity>
         </View>
 
         <View style={{ flex: 1 }}>
           {loading ? (
-            <ActivityIndicator size="large" color={Colors.primary} style={{ marginTop: 40 }} />
+            <ActivityIndicator
+              size="large"
+              color={Colors.primary}
+              style={{ marginTop: 40 }}
+            />
           ) : (
             <FlatList
               ref={listRef}
