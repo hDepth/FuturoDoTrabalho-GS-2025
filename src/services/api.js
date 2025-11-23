@@ -2,9 +2,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const api = axios.create({
-  baseURL: "http://10.0.2.2:4000/api", // Android Emulator
-  // OU use seu IP local se estiver no Expo Go
-  // baseURL: "http://SEU-IP:4000/api"
+  baseURL: "https://futurodotrabalho-gs-2025-backend.onrender.com/api",
 });
 
 // 🔐 Insere token automaticamente
